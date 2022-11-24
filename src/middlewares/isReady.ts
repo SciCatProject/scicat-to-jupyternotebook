@@ -8,6 +8,9 @@ router.get('/isReady', (req: Request, res: Response) => {
   const instances = getRunningInstancesUrls();
   const instanceId = req.query.instance_id as string | undefined;
 
+  console.log("Checking if Jupyter lab is ready");
+  console.log(instances);
+
   if (!instanceId) {
     res.status(400).send('Missing instance_id');
 
@@ -41,7 +44,7 @@ function getRunningInstancesUrls(): string[] {
   } else {
     const response = getStdoutFromCommand(jupyterListCommand);
     const lines = response.split('\n');
-    const urls = lines.map((line: string) => line.split(' ')[0]);
+    const urls = lines.map((line: string) => line.split(' ')[0]).filter((line: string) => line.includes('?token='));
 
     return urls;
   }
