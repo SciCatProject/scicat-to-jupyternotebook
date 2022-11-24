@@ -4,8 +4,10 @@ import express, { Request, Response } from 'express';
 
 const router = express.Router();
 const baseFolder = process.env.BASE_DESTINATION_FOLDER!;
+const jupyterLabCommand = process.env.JUPYTER_LAB_COMMAND || "jupyter lab --no-browser";
 
 router.post('/create', (req: Request, res: Response) => {
+  
   createFolderIfNotExist(baseFolder);
 
   const input = getDataFromrequest(req);
@@ -23,7 +25,18 @@ router.post('/create', (req: Request, res: Response) => {
     templateContents
   );
 
-  //spawnChildProcess('gnome-calculator');
+  const [command, ...parameters] = jupyterLabCommand.split(' ');
+  console.log(command);
+  console.log(parameters);
+  spawnChildProcess(
+    command,
+    parameters,
+    {
+      cwd: outputFolder,
+      detached: true,
+    }
+  );
+
   res.render('create', {
     showTitle: true,
     instance_id: input.instance_id,
@@ -48,9 +61,21 @@ function getDataFromrequest(req: Request) {
   //   }
 }
 
-function spawnChildProcess(path: string) {
+function spawnChildProcess(
+  cmd: string,
+  args: string[],
+  options: object
+) {
+  console.log("Spawing subprocess");
+  console.log(`Command: ${cmd}`);
+  console.log(`Arguments: ${args}`);
+  console.log(`Options: ${options}`);
   const { spawn } = require('child_process');
-  const ls = spawn(path);
+  const ls = spawn(
+    cmd,
+    args,
+    options
+  );
 }
 
 function createFolderIfNotExist(path: string) {
@@ -62,7 +87,7 @@ function createFolderIfNotExist(path: string) {
 function createFile(path: string, contents: string) {
   fs.writeFile(path, contents, function (err) {
     if (err) throw err;
-    console.log('Saved!');
+    console.log(path + 'Saved!');
   });
 }
 

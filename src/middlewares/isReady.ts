@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 
 const router = express.Router();
 const baseFolder = process.env.BASE_DESTINATION_FOLDER!;
+const jupyterListCommand = process.env.JUPYTER_LIST_COMMAND!;
 
 router.get('/isReady', (req: Request, res: Response) => {
   const instances = getRunningInstancesUrls();
@@ -38,7 +39,7 @@ function getRunningInstancesUrls(): string[] {
 
     return lines.map((line: string) => `http://localhost:8888/?token=${line}`);
   } else {
-    const response = getStdoutFromCommand('jupyter notebook list');
+    const response = getStdoutFromCommand(jupyterListCommand);
     const lines = response.split('\n');
     const urls = lines.map((line: string) => line.split(' ')[0]);
 
