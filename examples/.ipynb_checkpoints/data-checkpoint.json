@@ -1,0 +1,12 @@
+{
+  "user" : "massimilianonovelli",
+  "request_id" : "idce5fec2-6a5e-11ed-9932-874c95750a47",
+  "scicat_instance_url" : "https://staging.scicat.ess.eu",
+  "scicat_token" : "cff29422-6a64-11ed-9167-dbbb4141eb7c",
+  "datasets" : [
+    "20.500.12269/99ae086f-62dc-4228-a283-cc1c988c9e59",
+    "20.500.12269/041e81c7-f96f-4447-bb34-c8047a6425ac",
+    "20.500.12269/6a67b6e6-a202-4a6c-9859-4fecd6655165",
+    "20.500.12269/f685a72d-663f-4592-b593-110624d70eb5"
+  ]
+}
